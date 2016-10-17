@@ -6,9 +6,13 @@ const { execSync } = require('child_process');
 
 const eslintCache = new cache.Cache({ cacheDirName: 'eslint-cache' });
 
-const eslintVersion = 'dependencies.gulp-eslint.dependencies.eslint.version'
-	.split('.')
-	.reduce((acc, curr) => acc[curr], JSON.parse(execSync('npm ls eslint --json').toString()));
+const eslintVersion = [
+	'dependencies',
+	'gulp-eslint',
+	'dependencies',
+	'eslint',
+	'version',
+].reduce((acc, curr) => acc[curr], JSON.parse(execSync('npm ls eslint --json').toString()));
 
 function makeEslintCacheKey (file) {
 	return [ file.contents.toString('utf8'), fs.readFileSync('.eslintrc'), eslintVersion ].join('');
